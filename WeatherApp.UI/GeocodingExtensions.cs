@@ -5,7 +5,7 @@ namespace WeatherApp.UI
 {
     public class GeocodingExtensions
     {
-        private string GetApiKey()
+        private static string GetApiKey()
         {
             IConfiguration config = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -14,7 +14,7 @@ namespace WeatherApp.UI
             return config.GetSection("apikey").Value;
         }
 
-        public async Task<(string latitude, string longitude)> GetCoordinatesAsync(string city)
+        public static async Task<(string latitude, string longitude)> GetCoordinatesAsync(string city)
         {
             string key = GetApiKey();
 
