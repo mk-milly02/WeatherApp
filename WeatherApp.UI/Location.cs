@@ -1,23 +1,25 @@
-﻿namespace WeatherApp.UI
+﻿using System.Text.Json.Serialization;
+
+namespace WeatherApp.UI
 {
     public class Location
     {
+        [JsonPropertyName("name")]
         public string Name { get; set; }
 
+        [JsonPropertyName("local_names")]
         public LocalNames LocalNames { get; set; }
 
-        /// <summary>
-        /// Latitude
-        /// </summary>
-        public float Lat { get; set; }
+        [JsonPropertyName("lat")]
+        public float Latitude { get; set; }
 
-        /// <summary>
-        /// Longitude
-        /// </summary>
-        public float Lon { get; set; }
+        [JsonPropertyName("lon")]
+        public float Longitude { get; set; }
 
+        [JsonPropertyName("country")]
         public string Country { get; set; }
 
+        [JsonPropertyName("state")]
         public string State { get; set; }
     }
 

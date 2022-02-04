@@ -14,20 +14,5 @@ namespace WeatherApp.UI
             return config.GetSection("apikey").Value;
         }
 
-        public static async Task<(string latitude, string longitude)> GetCoordinatesAsync(string city)
-        {
-            string key = GetApiKey();
-
-            HttpClient client = new();
-
-            var response =
-                await client.GetAsync($"http://api.openweathermap.org/geo/1.0/direct?q={city}&appid={key}");
-
-            response.EnsureSuccessStatusCode();
-
-            var responseBody = await response.Content.ReadAsStringAsync();
-
-            
-        }
     }
 }
