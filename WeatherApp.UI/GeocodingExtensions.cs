@@ -5,7 +5,7 @@ namespace WeatherApp.UI
 {
     public class GeocodingExtensions
     {
-        private static string GetApiKey()
+        public static string GetApiKey()
         {
             IConfiguration config = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -20,16 +20,14 @@ namespace WeatherApp.UI
 
             HttpClient client = new();
 
-            var response = 
+            var response =
                 await client.GetAsync($"http://api.openweathermap.org/geo/1.0/direct?q={city}&appid={key}");
 
             response.EnsureSuccessStatusCode();
 
             var responseBody = await response.Content.ReadAsStringAsync();
 
-            City x = JsonConvert.DeserializeObject<City>(responseBody);
-
-            return (x.Latitude, x.Longitude);
+            
         }
     }
 }
