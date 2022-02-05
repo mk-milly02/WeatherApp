@@ -10,11 +10,15 @@ namespace WeatherApp.UI
         [JsonPropertyName("local_names")]
         public LocalNames LocalNames { get; set; }
 
-        [JsonPropertyName("lat")]
-        public float Latitude { get; set; }
+        /// <summary>
+        /// Latitude
+        /// </summary>
+        public float Lat { get; set; }
 
-        [JsonPropertyName("lon")]
-        public float Longitude { get; set; }
+        /// <summary>
+        /// Longitude
+        /// </summary>
+        public float Lon { get; set; }
 
         [JsonPropertyName("country")]
         public string Country { get; set; }
