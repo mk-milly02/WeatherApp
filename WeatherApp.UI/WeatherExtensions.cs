@@ -4,7 +4,7 @@ namespace WeatherApp.UI
 {
     public class WeatherExtensions
     {
-        public static async Task<string> GetWeatherConditionsAsync(string city)
+        public static async Task<WeatherApiResponse> GetWeatherConditionsAsync(string city)
         {
             string key = GeocodingExtensions.GetApiKey();
             (string lat, string lon) = await GeocodingExtensions.GetCoordinatesAsync(city);
@@ -19,7 +19,7 @@ namespace WeatherApp.UI
 
             WeatherApiResponse conditions = JsonConvert.DeserializeObject<WeatherApiResponse>(responseBody);
 
-            return conditions.Main.Temp.ToString();
+            return conditions;
         }
     }
 }

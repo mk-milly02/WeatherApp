@@ -6,6 +6,10 @@ Console.WriteLine("Hello, World!");
 Console.Write("\nWhere are you? ");
 string city = Console.ReadLine();
 
-Console.WriteLine(await WeatherExtensions.GetWeatherConditionsAsync(city));
+var conditions = await WeatherExtensions.GetWeatherConditionsAsync(city);
+
+var temp = conditions.Main.Temp;
+
+Console.WriteLine($"{temp} degrees Celsius.");
 
 Console.ReadKey();
