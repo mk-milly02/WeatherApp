@@ -35,4 +35,15 @@ public class ApiExtensions
 
         return (responseCity.Lat.ToString(), responseCity.Lon.ToString());
     }
+
+    public static async Task<WeatherApiResponse> GetWeatherConditionsAsync(string city)
+    {
+        string key = GetApiKey();
+        (string lat, string lon) = await GetCoordinatesAsync(city);
+        string uri = $"http://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={key}&units=metric";
+
+        WeatherApiResponse response = await GetDataAsync<WeatherApiResponse>(uri);
+
+        return response;
+    }
 }
