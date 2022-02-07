@@ -3,13 +3,7 @@ using WeatherApp.UI;
 
 Console.WriteLine("Hello, World!");
 
-Console.Write("\nWhere are you? ");
-string city = Console.ReadLine();
-
-var conditions = await WeatherExtensions.GetWeatherConditionsAsync(city);
-
-var temp = conditions.Main.Temp;
-
-Console.WriteLine($"{temp} degrees Celsius.");
+//http://api.openweathermap.org/geo/1.0/direct?q={city}&limit=1&appid={key}
+//http://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={key}&units=metric
 
 Console.ReadKey();
