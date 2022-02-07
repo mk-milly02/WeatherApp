@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using WeatherApp.UI;
 
 public class ApiExtensions
 {
@@ -21,5 +22,17 @@ public class ApiExtensions
         T response = JsonConvert.DeserializeObject<T>(responseBody);
         
         return response;
+    }
+
+    public static async Task<(string latitude, string longitude)> GetCoordinatesAsync(string city)
+    {
+        string key = GetApiKey();
+        string uri = $"http://api.openweathermap.org/geo/1.0/direct?q={city}&limit=1&appid={key}";
+
+        List<GeocodingApiResponse> response = await GetDataAsync<List<GeocodingApiResponse>>(uri);
+
+        var responseCity = response.FirstOrDefault();
+
+        return (responseCity.Lat.ToString(), responseCity.Lon.ToString());
     }
 }
