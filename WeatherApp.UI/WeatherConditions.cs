@@ -41,4 +41,15 @@
         public int Sunrise { get; set; }
         public int Sunset { get; set; }
     }
+
+    public class Weather
+    {
+        public int Id { get; set; }
+
+        public string Main { get; set; }
+
+        public string Description { get; set; }
+
+        public string Icon { get; set; }
+    }
 }
