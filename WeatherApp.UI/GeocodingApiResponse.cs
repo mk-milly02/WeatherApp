@@ -2,7 +2,7 @@
 
 namespace WeatherApp.UI
 {
-    public class Location
+    public class GeocodingApiResponse
     {
         [JsonPropertyName("name")]
         public string Name { get; set; }
