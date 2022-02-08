@@ -21,4 +21,7 @@ Console.Write($"\t\tHumidity: {response.Main.Humidity}");
 Console.ForegroundColor = ConsoleColor.Gray;
 Console.WriteLine($"\n\nDescription: {response.Weather.FirstOrDefault().Description}");
 
+Console.ForegroundColor = ConsoleColor.DarkYellow;
+Console.WriteLine($"\nWind: {response.Wind.Speed}km\\h \tDirection: {WindDirection.GetWindDirection(response.Wind.Deg)}");
+
 Console.ReadKey();
