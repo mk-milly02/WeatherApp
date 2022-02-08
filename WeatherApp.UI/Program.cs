@@ -10,4 +10,15 @@ WeatherApiResponse response = await ApiExtensions.GetWeatherConditionsAsync(city
 
 Console.WriteLine($"\n{city} weather: {response.Main.Temp} degrees Celsius.");
 
+Console.ForegroundColor = ConsoleColor.DarkBlue;
+
+Console.Write($"\nSunrise time: {response.Sys.Sunrise}");
+Console.Write($"\tSunset time: {response.Sys.Sunset}");
+
+Console.ForegroundColor = ConsoleColor.DarkGreen;
+Console.Write($"\t\tHumidity: {response.Main.Humidity}");
+
+Console.ForegroundColor = ConsoleColor.Gray;
+Console.WriteLine($"\n\nDescription: {response.Weather.FirstOrDefault().Description}");
+
 Console.ReadKey();
