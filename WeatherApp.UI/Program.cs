@@ -8,7 +8,9 @@ string city = Console.ReadLine();
 
 WeatherApiResponse response = await ApiExtensions.GetWeatherConditionsAsync(city);
 
-Console.WriteLine($"\n{city} weather: {response.Main.Temp} degrees Celsius.");
+float temp = response.Main.Temp;
+
+Console.WriteLine($"\n{city} weather: {temp}°C / {Temperature.ConvertToFahrenheit(temp)}°F.");
 
 Console.ForegroundColor = ConsoleColor.DarkBlue;
 
