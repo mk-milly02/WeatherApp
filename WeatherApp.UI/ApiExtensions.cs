@@ -1,49 +1,51 @@
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using WeatherApp.UI;
 
-public class ApiExtensions
+namespace WeatherApp.UI
 {
-    public static string GetApiKey()
+    public class ApiExtensions
     {
-        IConfiguration config = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json").Build();
+        public static string GetApiKey()
+        {
+            IConfiguration config = new ConfigurationBuilder()
+                    .SetBasePath(Directory.GetCurrentDirectory())
+                    .AddJsonFile("appsettings.json").Build();
 
             return config.GetSection("apikey").Value;
-    }
+        }
 
-    public static async Task<T> GetDataAsync<T>(string uri)
-    {
-        HttpClient client = new();
+        public static async Task<T> GetDataAsync<T>(string uri)
+        {
+            HttpClient client = new();
 
-        var responseBody = await client.GetStringAsync(uri);
+            var responseBody = await client.GetStringAsync(uri);
 
-        T response = JsonConvert.DeserializeObject<T>(responseBody);
-        
-        return response;
-    }
+            T response = JsonConvert.DeserializeObject<T>(responseBody);
 
-    public static async Task<(string latitude, string longitude)> GetCoordinatesAsync(string city)
-    {
-        string key = GetApiKey();
-        string uri = $"http://api.openweathermap.org/geo/1.0/direct?q={city}&limit=1&appid={key}";
+            return response;
+        }
 
-        List<GeocodingApiResponse> response = await GetDataAsync<List<GeocodingApiResponse>>(uri);
+        public static async Task<(string latitude, string longitude)> GetCoordinatesAsync(string city)
+        {
+            string key = GetApiKey();
+            string uri = $"http://api.openweathermap.org/geo/1.0/direct?q={city}&limit=1&appid={key}";
 
-        var responseCity = response.FirstOrDefault();
+            List<GeocodingApiResponse> response = await GetDataAsync<List<GeocodingApiResponse>>(uri);
 
-        return (responseCity.Lat.ToString(), responseCity.Lon.ToString());
-    }
+            var responseCity = response.FirstOrDefault();
 
-    public static async Task<WeatherApiResponse> GetWeatherConditionsAsync(string city)
-    {
-        string key = GetApiKey();
-        (string lat, string lon) = await GetCoordinatesAsync(city);
-        string uri = $"http://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={key}&units=metric";
+            return (responseCity.Lat.ToString(), responseCity.Lon.ToString());
+        }
 
-        WeatherApiResponse response = await GetDataAsync<WeatherApiResponse>(uri);
+        public static async Task<WeatherApiResponse> GetWeatherConditionsAsync(string city)
+        {
+            string key = GetApiKey();
+            (string lat, string lon) = await GetCoordinatesAsync(city);
+            string uri = $"http://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={key}&units=metric";
 
-        return response;
+            WeatherApiResponse response = await GetDataAsync<WeatherApiResponse>(uri);
+
+            return response;
+        }
     }
 }

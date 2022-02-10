@@ -1,7 +1,10 @@
-public class Temperature
+namespace WeatherApp.UI
 {
-    public static float ConvertToFahrenheit(float temperature)
+    public class Temperature
     {
-        return (temperature * (9/5)) + 32;
+        public static float ConvertToFahrenheit(float temperature)
+        {
+            return temperature * (9 / 5) + 32;
+        }
     }
 }
