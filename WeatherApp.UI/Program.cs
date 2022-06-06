@@ -1,29 +1,44 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using WeatherApp.UI;
+using Spectre.Console;
 
-Console.WriteLine("Hello, World!");
+Console.OutputEncoding = System.Text.Encoding.UTF8;
 
-Console.Write("Where are you? ");
-string city = Console.ReadLine();
+AnsiConsole.Write(new FigletText("Weather App").Centered().Color(Color.Pink1));
 
-WeatherApiResponse response = await ApiExtensions.GetWeatherConditionsAsync(city);
+string location = AnsiConsole.Ask<string>("[gold1]Where[/] are you?");
 
-float temp = response.Main.Temp;
+WeatherApiResponse response = new();
 
-Console.WriteLine($"\n{city} weather: {temp}°C / {Temperature.ConvertToFahrenheit(temp)}°F.");
+await AnsiConsole.Status().Spinner(Spinner.Known.Weather).SpinnerStyle("blue")
+    .StartAsync("Fetching weather conditions...", async ctx => 
+    {
+        response = await ApiExtensions.GetWeatherConditionsAsync(location);
+        Thread.Sleep(5000);
+    });
+    
+AnsiConsole.WriteLine("\n");
 
-Console.ForegroundColor = ConsoleColor.DarkBlue;
+AnsiConsole.Write(new Rule($"{location} Weather Conditions").RuleStyle("blue"));
 
-Console.Write($"\nSunrise time: {response.Sys.Sunrise}");
-Console.Write($"\tSunset time: {response.Sys.Sunset}");
+var root = new Tree($"Description: [green]{response.Weather.FirstOrDefault().Description.ToUpperInvariant()}[/]").Guide(TreeGuide.DoubleLine);
 
-Console.ForegroundColor = ConsoleColor.DarkGreen;
-Console.Write($"\t\tHumidity: {response.Main.Humidity}");
+var temp = root.AddNode("Temperature");
 
-Console.ForegroundColor = ConsoleColor.Gray;
-Console.WriteLine($"\n\nDescription: {response.Weather.FirstOrDefault().Description}");
+temp.AddNode($"{Emoji.Known.Thermometer}" + $"Main: {response.Main.Temp}°C / {Temperature.ConvertToFahrenheit(response.Main.Temp)}°F");
 
-Console.ForegroundColor = ConsoleColor.DarkYellow;
-Console.WriteLine($"\nWind: {response.Wind.Speed}km\\h \tDirection: {WindDirection.GetWindDirection(response.Wind.Deg)}");
+temp.AddNode($"{Emoji.Known.Thermometer}" + $"Min: {response.Main.TempMin}°C / {Temperature.ConvertToFahrenheit(response.Main.TempMin)}°F");
+
+temp.AddNode($"{Emoji.Known.Thermometer}" + $"Max: {response.Main.TempMax}°C / {Temperature.ConvertToFahrenheit(response.Main.TempMax)}°F");
+
+root.AddNode($"Humidity: {response.Main.Humidity}");
+
+var wind = root.AddNode("Wind");
+
+wind.AddNode($"{Emoji.Known.WindFace}" + $"Speed: {response.Wind.Speed}km//h");
+
+wind.AddNode($"{Emoji.Known.WindFace}" + $"Direction: {WindDirection.GetWindDirection(response.Wind.Deg)}");
+
+AnsiConsole.Write(root);
 
 Console.ReadKey();
